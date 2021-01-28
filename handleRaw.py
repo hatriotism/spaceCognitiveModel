@@ -31,7 +31,7 @@ def getPOS(word):
     return seg.cut(word)[0][1]
 
 def fromCuted(line):
-    outputFileName = 'fromCuted.txt'
+    outputFileName = 'extracted.txt'
     foundCount = 0
     foundIndex = []
     entityIndex = []
@@ -55,11 +55,6 @@ def fromCuted(line):
                     if pos in entityPos:
                         entityIndex.append(index)
                         entityWords = entityWords | {token}
-                        # moreEntityWordsList = cosine(token, 1)
-                        # for entity in moreEntityWordsList:
-                        #     if getPOS(entity) in entityPos:
-                        #         moreEntityWords = moreEntityWords | {entity}
-                        #         break
 
                 foundFre = round(foundCount / len(lineCuted), 3)
                 entityCount = len(entityWords)
@@ -69,8 +64,16 @@ def fromCuted(line):
                     for index in foundIndex:
                         f.write(f"{lineCuted[index][0]} ")
                     f.write(f"\n####{entityWords}")
-                    f.write("\n\n")
+                    
+                    # for entity in entityWords:
+                    #     moreEntityWordsList = cosine(entity, 5)
+                    #     for moreEntity in moreEntityWordsList:
+                    #         if getPOS(moreEntity) in entityPos:
+                    #             moreEntityWords = moreEntityWords | {moreEntity}
+                    #             break
 
+                    f.write(f"\n#####{moreEntityWords}")
+                    f.write("\n\n")
                     result.append({
                         'line': line,   # 原句 
                         'lineCuted': lineCuted, # 分词后 

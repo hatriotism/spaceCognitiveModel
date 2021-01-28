@@ -2,9 +2,9 @@ from config import *
 
 outputFolder = 'knowledgeRepository/'
 
-# clustersCopy = anonym.copy()
+# clustersCopy = antonym.copy()
 # for word in clustersCopy:
-#     anonym[anonym[word]] = word
+#     antonym[antonym[word]] = word
 
 def generalExtractStrategy(target, ghost, candidates):
     got = False
@@ -55,16 +55,16 @@ for clusterList in clusterLists:
                         candidates = generalExtractStrategy(target, ghost, candidates)
                         got = True
                         
-            if target not in anonym:
-                anonym[target] = candidates
+            if target not in antonym:
+                antonym[target] = candidates
             else:
-                anonym[target] = anonym[target] | candidates
-for target in anonym:
-    anonym[target] = list(anonym[target])
+                antonym[target] = antonym[target] | candidates
+for target in antonym:
+    antonym[target] = list(antonym[target])
 
 
-with open(outputFolder + "Anonym.json", "w", encoding='utf-8') as f:
-    json.dump(anonym, f, indent=2, sort_keys=True, ensure_ascii=False)
+with open(outputFolder + "Antonym.json", "w", encoding='utf-8') as f:
+    json.dump(antonym, f, indent=2, sort_keys=True, ensure_ascii=False)
 
 # with open("synonym.json", "w", encoding='utf-8') as f:
 #     json.dump(clusterLists, f, indent=2, sort_keys=True, ensure_ascii=False)
@@ -73,9 +73,9 @@ with open(outputFolder + "SpaceCognitiveModels.json", "w", encoding='utf-8') as 
     json.dump(clusterLists, f, indent=2, sort_keys=True, ensure_ascii=False)
 
 with open(outputFolder + "SpaceLexicon.txt", "w", encoding='utf-8') as f:
-    for words in list(anonym.keys()):
+    for words in list(antonym.keys()):
         if len(words) > 1:
             f.write(f"{words}\n")
 
 with open(outputFolder + "SpaceLexicon.json", "w", encoding='utf-8') as f:      
-    json.dump(list(anonym.keys()), f, indent=2, sort_keys=True, ensure_ascii=False)
+    json.dump(list(antonym.keys()), f, indent=2, sort_keys=True, ensure_ascii=False)

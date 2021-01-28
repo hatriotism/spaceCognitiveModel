@@ -1,11 +1,11 @@
 import json
-anonym = {}
+antonym = {}
 # synonym = {}
 
-characters = [
-    '上', '下', '左', '右', '前', '后', '进', '出', '来', '去', '东', '南', '西', '北', '里', '外'
-    # '回', '过', '起', 
-]
+# characters = [
+#     '上', '下', '左', '右', '前', '后', '进', '出', '来', '去', '东', '南', '西', '北', '里', '外'
+#     # '回', '过', '起', 
+# ]
 
 class generalModel(object):
     roots = []
@@ -39,8 +39,18 @@ class generalModel(object):
 
     # 指定root的所有派生
     @classmethod
-    def general(cls, root):
-        return [ root + suffix for suffix in generalModel.suffixes ] + [ root + suffix for suffix in cls.suffixes ] + [ prefixes + root for prefixes in cls.prefixes ]
+    def generalForOne(cls, root):
+        return [ root + suffix for suffix in generalModel.suffixes ] + cls.suffixDerivateForOne(root) + cls.prefixDerivateForOne(root)
+
+    # 指定root的后缀派生
+    @classmethod
+    def suffixDerivateForOne(cls, root):
+        return [ root + suffix for suffix in cls.suffixes ]
+
+    # 指定root的前缀派生
+    @classmethod
+    def prefixDerivateForOne(cls, root):
+        return [ prefixes + root for prefixes in cls.prefixes ]
     
 
 # 方位指示代词
@@ -91,6 +101,16 @@ nzCompassSuffixDerivations.suffixDerivate()
 
 # 垂直中线模型
 class verticalMidlineModel(generalModel):
+    roots = [
+        ['两'], ['一'], 
+    ]
+    suffixes = [
+        '边', '侧', '端', '旁',
+    ]
+    pos = 'f'
+
+# 水平中线模型
+class horizontalMidlineModel(generalModel):
     roots = [
         ['中'], ['上'], ['下'], 
     ]
@@ -163,14 +183,14 @@ clusterLists = [
     # 盒子模型、隔断模型
     boxModel.roots,
     [
-        boxModel.general('里') + boxModel.general('内') + ['当中', '之中', '中',],
-        boxModel.general('外') + [ '外围', ], 
-        boxModel.general('上') + boxModel.general('顶') + [ '底下', ],
-        boxModel.general('下') + boxModel.general('底'),
-        boxModel.general('左'),
-        boxModel.general('右'),
-        boxModel.general('前'),
-        boxModel.general('后'),
+        boxModel.generalForOne('里') + boxModel.generalForOne('内') + ['当中', '之中', '中',],
+        boxModel.generalForOne('外') + [ '外围', ], 
+        boxModel.generalForOne('上') + boxModel.generalForOne('顶') + [ '底下', ],
+        boxModel.generalForOne('下') + boxModel.generalForOne('底'),
+        boxModel.generalForOne('左'),
+        boxModel.generalForOne('右'),
+        boxModel.generalForOne('前'),
+        boxModel.generalForOne('后'),
         ['四周', '四面', '四围', '四周围', '周围'],
         ['侧方', '侧面', '侧旁'],
         ['旁', '旁边', '边上', '边沿', '近旁', '近前',],
@@ -194,15 +214,15 @@ clusterLists = [
     # 垂直中线模型
     [
         ['正中', '正当中', '当中', '中部', '中间', '之间', '之中', '中', ],
-        ['一旁', ],
-        ['两边', '两侧', '两端', '两旁', ],
+        verticalMidlineModel.suffixDerivateForOne('一'),
+        verticalMidlineModel.suffixDerivateForOne('两'),
         ['对面', '斜对面',], 
     ],
     # 水平中线模型
     [
-        verticalMidlineModel.general('中') + ['中间', '之间', '之中', '中', ],
-        verticalMidlineModel.general('上'),
-        verticalMidlineModel.general('下'),
+        horizontalMidlineModel.generalForOne('中') + ['中间', '之间', '之中', '中', ],
+        horizontalMidlineModel.generalForOne('上'),
+        horizontalMidlineModel.generalForOne('下'),
     ],
     # 循环模型
     [
@@ -254,7 +274,8 @@ clusterLists = [
     ],
 ]
 
-entityPos = ['n', 'ns', 'nr', 'nt', 'r', 's']
+entityPos = ['n', 'ns', 'nr', 'nt', 'r', 's'] # pkuseg
+# entityPos = ['n', 'np', 'ns', 'ni', 'nz', 's', 'r'] # thulac
 
 stopPos = ['t', 'd', 'j']
 stopWords = [
@@ -281,5 +302,5 @@ scoreMap = {
 }
 
 allPrefixes = set(boxModel.prefixes + generalModel.prefixes + indicationWords.prefixes + compassModel.prefixes + fCompassPrefixDerivations.prefixes)
-allSuffixes = set(boxModel.suffixes + generalModel.suffixes + indicationWords.suffixes + compassModel.suffixes + verticalMidlineModel.suffixes + nzCompassSuffixDerivations.suffixes )
+allSuffixes = set(boxModel.suffixes + generalModel.suffixes + indicationWords.suffixes + compassModel.suffixes + horizontalMidlineModel.suffixes + nzCompassSuffixDerivations.suffixes )
 

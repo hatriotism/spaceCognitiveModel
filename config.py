@@ -302,5 +302,5 @@ scoreMap = {
 }
 
 allPrefixes = set(boxModel.prefixes + generalModel.prefixes + indicationWords.prefixes + compassModel.prefixes + fCompassPrefixDerivations.prefixes)
-allSuffixes = set(boxModel.suffixes + generalModel.suffixes + indicationWords.suffixes + compassModel.suffixes + horizontalMidlineModel.suffixes + nzCompassSuffixDerivations.suffixes )
+allSuffixes = set(boxModel.suffixes + generalModel.suffixes + indicationWords.suffixes + compassModel.suffixes + horizontalMidlineModel.suffixes + verticalMidlineModel.suffixes + nzCompassSuffixDerivations.suffixes )
 
